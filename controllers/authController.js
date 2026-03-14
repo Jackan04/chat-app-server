@@ -41,5 +41,6 @@ export const login = async (req, res) => {
 };
 
 export const getMe = async (req, res) => {
-  res.status(501).json({ message: "Not implemented" });
+  const { password, ...user } = req.user;
+  res.json(user);
 };
