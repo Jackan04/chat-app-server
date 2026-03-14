@@ -8,7 +8,7 @@ import {
 
 const usersRouter = Router();
 
-usersRouter.get("/", getUsers);
+usersRouter.get("/",  getUsers);
 usersRouter.get("/:id", getUserById);
 usersRouter.patch("/:id", updateUser);
 usersRouter.delete("/:id", deleteUser);
