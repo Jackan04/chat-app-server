@@ -15,7 +15,7 @@ export const register = async (req, res) => {
   });
 
   const token = signToken(user.id);
-  res.send(201).json({ token });
+  res.status(201).json({ token });
 };
 
 export const login = async (req, res) => {
