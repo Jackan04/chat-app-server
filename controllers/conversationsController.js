@@ -10,9 +10,11 @@ export const getConversations = async (req, res, next) => {
       },
       include: {
         participants: {
-          id: true,
-          username: true,
-          displayName: true,
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+          },
         },
         messages: true,
       },
