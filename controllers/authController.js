@@ -8,7 +8,11 @@ export const register = async (req, res, next) => {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
-      return res.status(400).json({ validationErrors });
+      next({
+        status: 400,
+        message: "Validation failed",
+        errors: validationErrors.array(),
+      });
     }
 
     const { username, password } = req.body;
@@ -33,7 +37,11 @@ export const login = async (req, res) => {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
-      return res.status(400).json({ validationErrors });
+      next({
+        status: 400,
+        message: "Validation failed",
+        errors: validationErrors.array(),
+      });
     }
 
     const { username, password } = req.body;
