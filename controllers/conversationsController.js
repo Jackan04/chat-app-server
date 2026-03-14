@@ -69,10 +69,6 @@ export const getConversationById = async (req, res, next) => {
   }
 };
 
-export const getMessages = async (req, res) => {
-  res.status(501).json({ message: "Not implemented" });
-};
-
 export const sendMessage = async (req, res) => {
   res.status(501).json({ message: "Not implemented" });
 };
