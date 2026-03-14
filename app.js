@@ -13,6 +13,14 @@ app.use(passport.initialize());
 
 app.use("/api", router);
 
+app.use((req, res) => {
+  res.status(404).json({ message: "404 - Page Not Found" });
+});
+
+app.use((err, req, res, next) => {
+  res.json({ err });
+});
+
 const PORT = process.env.PORT;
 app.listen(PORT, (error) => {
   if (error) {

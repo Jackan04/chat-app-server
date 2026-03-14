@@ -1,43 +1,64 @@
 import { prisma } from "../lib/prisma.js";
 import bcrypt from "bcrypt";
 import { signToken } from "../lib/jwt.js";
+import { validationResult } from "express-validator";
 
-export const register = async (req, res) => {
-  const { username, password } = req.body;
+export const register = async (req, res, next) => {
+  try {
+    const validationErrors = validationResult(req);
 
-  const passwordHash = await bcrypt.hash(password, 10);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ validationErrors });
+    }
 
-  const user = await prisma.user.create({
-    data: {
-      username: username,
-      password: passwordHash,
-    },
-  });
+    const { username, password } = req.body;
+    const passwordHash = await bcrypt.hash(password, 10);
 
-  const token = signToken(user.id);
-  res.status(201).json({ token });
+    const user = await prisma.user.create({
+      data: {
+        username: username,
+        password: passwordHash,
+      },
+    });
+
+    const token = signToken(user.id);
+    res.status(201).json({ token });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const login = async (req, res) => {
-  const { username, password } = req.body;
-  const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-    },
-  });
+  try {
+    const validationErrors = validationResult(req);
 
-  if (!user) {
-    res.status(401).json({ message: "Invalid credentials" });
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ validationErrors });
+    }
+
+    const { username, password } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (!user) {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = signToken(user.id);
+    res.status(201).json({ token });
+  } catch (error) {
+    next(error);
   }
-
-  const match = await bcrypt.compare(password, user.password);
-
-  if (!match) {
-    res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  const token = signToken(user.id);
-  res.status(201).json({ token });
 };
 
 export const getMe = async (req, res) => {
