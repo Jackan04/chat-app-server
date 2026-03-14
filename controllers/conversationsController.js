@@ -69,6 +69,20 @@ export const getConversationById = async (req, res, next) => {
   }
 };
 
-export const sendMessage = async (req, res) => {
-  res.status(501).json({ message: "Not implemented" });
+export const sendMessage = async (req, res, next) => {
+  try {
+    const { content, conversationId } = req.body;
+
+    const message = await prisma.message.create({
+      data: {
+        content: content,
+        senderId: req.user.id,
+        conversationId: conversationId,
+      },
+    });
+
+    res.json({ message });
+  } catch (error) {
+    next(error);
+  }
 };
