@@ -26,8 +26,20 @@ export const getConversations = async (req, res, next) => {
   }
 };
 
-export const createConversation = async (req, res) => {
-  res.status(501).json({ message: "Not implemented" });
+export const createConversation = async (req, res, next) => {
+  try {
+    const { participant1, participant2 } = req.body;
+
+    const conversation = await prisma.conversation.create({
+      data: {
+        participants: [participant1, participant2],
+      },
+    });
+
+    res.json(conversation);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getConversationById = async (req, res) => {
