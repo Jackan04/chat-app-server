@@ -53,7 +53,7 @@ export async function login(req, res, next) {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return next({ status: 401, message: "Invalid credentials" });
     }
 
     const match = await bcrypt.compare(password, user.password);
