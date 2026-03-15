@@ -28,7 +28,7 @@ export async function register(req, res, next) {
     const token = signToken(user.id);
     res.status(201).json({ token });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -65,7 +65,7 @@ export async function login(req, res, next) {
     const token = signToken(user.id);
     res.status(201).json({ token });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
