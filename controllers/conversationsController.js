@@ -20,9 +20,9 @@ export async function getConversations(req, res, next) {
       },
     });
 
-    res.json(conversations);
+    return res.json(conversations);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -32,19 +32,30 @@ export async function createConversation(req, res, next) {
 
     const conversation = await prisma.conversation.create({
       data: {
-        participants: [participant1, participant2],
+        participants: {
+          connect: [{ id: participant1 }, { id: participant2 }],
+        },
+      },
+      include: {
+        participants: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+          },
+        },
       },
     });
 
-    res.json(conversation);
+    return res.status(201).json(conversation);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
 export async function getConversationById(req, res, next) {
   try {
-    const conversation = await prisma.conversation.findUnique({
+    const conversation = await prisma.conversation.findFirst({
       where: {
         id: Number(req.params.id),
         participants: {
@@ -63,15 +74,20 @@ export async function getConversationById(req, res, next) {
       },
     });
 
-    res.json(conversation);
+    if (!conversation) {
+      return next({ status: 404, message: "Conversation not found" });
+    }
+
+    return res.json(conversation);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
 export async function sendMessage(req, res, next) {
   try {
-    const { content, conversationId } = req.body;
+    const { content } = req.body;
+    const conversationId = req.params.conversationId;
 
     const message = await prisma.message.create({
       data: {
@@ -81,8 +97,8 @@ export async function sendMessage(req, res, next) {
       },
     });
 
-    res.json({ message });
+    return res.status(201).json({ message });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
