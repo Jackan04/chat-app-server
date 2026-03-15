@@ -43,11 +43,17 @@ export async function getUserById(req, res, next) {
 }
 
 export async function updateUser(req, res, next) {
+  const userId = Number(req.params.id);
+
+  if (req.user.id !== userId) {
+    return next({ status: 403, message: "Forbidden" });
+  }
+  
   try {
     const { displayName, bio, online } = req.body;
 
     const user = await prisma.user.update({
-      where: { id: Number(req.params.id) },
+      where: { id: userId },
       data: {
         displayName: displayName,
         bio: bio,
@@ -69,10 +75,16 @@ export async function updateUser(req, res, next) {
 }
 
 export async function deleteUser(req, res, next) {
+  const userId = Number(req.params.id);
+
+  if (req.user.id !== userId) {
+    return next({ status: 403, message: "Forbidden" });
+  }
+
   try {
     const user = await prisma.user.delete({
       where: {
-        id: Number(req.params.id),
+        id: userId,
       },
       select: {
         id: true,
