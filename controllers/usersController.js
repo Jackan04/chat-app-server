@@ -11,9 +11,9 @@ export async function getUsers(req, res, next) {
         online: true,
       },
     });
-    res.json(users);
+    return res.json(users);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -32,9 +32,13 @@ export async function getUserById(req, res, next) {
       },
     });
 
-    res.json(user);
+    if (!user) {
+      return next({ status: 404, message: "User not found" });
+    }
+
+    return res.json(user);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -58,9 +62,9 @@ export async function updateUser(req, res, next) {
       },
     });
 
-    res.json(user);
+    return res.json(user);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -79,8 +83,8 @@ export async function deleteUser(req, res, next) {
       },
     });
 
-    res.json(user);
+    return res.json(user);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
