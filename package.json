@@ -13,10 +13,10 @@
   "license": "ISC",
   "author": "Jacob Asker",
   "type": "module",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch app.js",
+    "start": "node --watch server.js",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio --config ./prisma.config.js"
