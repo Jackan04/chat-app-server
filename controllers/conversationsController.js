@@ -87,7 +87,7 @@ export async function getConversationById(req, res, next) {
 export async function sendMessage(req, res, next) {
   try {
     const { content } = req.body;
-    const conversationId = req.params.conversationId;
+    const conversationId = req.params.id;
 
     const message = await prisma.message.create({
       data: {
