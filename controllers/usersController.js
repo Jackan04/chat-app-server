@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 
-export const getUsers = async (req, res, next) => {
+export async function getUsers(req, res, next) {
   try {
     const users = await prisma.user.findMany({
       select: {
@@ -15,9 +15,9 @@ export const getUsers = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const getUserById = async (req, res, next) => {
+export async function getUserById(req, res, next) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -36,9 +36,9 @@ export const getUserById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const updateUser = async (req, res, next) => {
+export async function updateUser(req, res, next) {
   try {
     const { displayName, bio, online } = req.body;
 
@@ -62,9 +62,9 @@ export const updateUser = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const deleteUser = async (req, res, next) => {
+export async function deleteUser(req, res, next) {
   try {
     const user = await prisma.user.delete({
       where: {
@@ -83,4 +83,4 @@ export const deleteUser = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}

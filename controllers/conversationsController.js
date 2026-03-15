@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 
-export const getConversations = async (req, res, next) => {
+export async function getConversations(req, res, next) {
   try {
     const conversations = await prisma.conversation.findMany({
       where: {
@@ -24,9 +24,9 @@ export const getConversations = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const createConversation = async (req, res, next) => {
+export async function createConversation(req, res, next) {
   try {
     const { participant1, participant2 } = req.body;
 
@@ -40,9 +40,9 @@ export const createConversation = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const getConversationById = async (req, res, next) => {
+export async function getConversationById(req, res, next) {
   try {
     const conversation = await prisma.conversation.findUnique({
       where: {
@@ -67,9 +67,9 @@ export const getConversationById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const sendMessage = async (req, res, next) => {
+export async function sendMessage(req, res, next) {
   try {
     const { content, conversationId } = req.body;
 
@@ -85,4 +85,4 @@ export const sendMessage = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}

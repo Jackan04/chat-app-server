@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { signToken } from "../lib/jwt.js";
 import { validationResult } from "express-validator";
 
-export const register = async (req, res, next) => {
+export async function register(req, res, next) {
   try {
     const validationErrors = validationResult(req);
 
@@ -30,9 +30,9 @@ export const register = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const login = async (req, res, next) => {
+export async function login(req, res, next) {
   try {
     const validationErrors = validationResult(req);
 
@@ -67,9 +67,9 @@ export const login = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const getMe = async (req, res) => {
+export async function getMe(req, res) {
   const { password, ...user } = req.user;
   res.json(user);
-};
+}
