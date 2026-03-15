@@ -1,16 +1,16 @@
 import { prisma } from "../lib/prisma.js";
 
+const userSelect = {
+  id: true,
+  username: true,
+  displayName: true,
+  bio: true,
+  online: true,
+};
+
 export async function getUsers(req, res, next) {
   try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        displayName: true,
-        bio: true,
-        online: true,
-      },
-    });
+    const users = await prisma.user.findMany({ select: userSelect });
     return res.json(users);
   } catch (error) {
     return next(error);
@@ -23,13 +23,7 @@ export async function getUserById(req, res, next) {
       where: {
         id: Number(req.params.id),
       },
-      select: {
-        id: true,
-        username: true,
-        displayName: true,
-        bio: true,
-        online: true,
-      },
+      select: userSelect,
     });
 
     if (!user) {
@@ -48,7 +42,7 @@ export async function updateUser(req, res, next) {
   if (req.user.id !== userId) {
     return next({ status: 403, message: "Forbidden" });
   }
-  
+
   try {
     const { displayName, bio, online } = req.body;
 
@@ -59,13 +53,7 @@ export async function updateUser(req, res, next) {
         bio: bio,
         online: online,
       },
-      select: {
-        id: true,
-        username: true,
-        displayName: true,
-        bio: true,
-        online: true,
-      },
+      select: userSelect,
     });
 
     return res.json(user);
@@ -86,13 +74,7 @@ export async function deleteUser(req, res, next) {
       where: {
         id: userId,
       },
-      select: {
-        id: true,
-        username: true,
-        displayName: true,
-        bio: true,
-        online: true,
-      },
+      select: userSelect,
     });
 
     return res.json(user);
