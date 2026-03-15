@@ -28,12 +28,12 @@ export async function getConversations(req, res, next) {
 
 export async function createConversation(req, res, next) {
   try {
-    const { participant1, participant2 } = req.body;
+    const { user1Id, user2Id } = req.body;
 
     const conversation = await prisma.conversation.create({
       data: {
         participants: {
-          connect: [{ id: participant1 }, { id: participant2 }],
+          connect: [{ id: user1Id }, { id: user2Id }],
         },
       },
       include: {
