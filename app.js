@@ -18,7 +18,15 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.json({ err });
+  const responseBody = {
+    message: err.message || "There was an error",
+  };
+
+  if (err.validationErrors.length > 0) {
+    responseBody.validationErrors = err.validationErrors;
+  }
+
+  res.status(err.status || 500).json(responseBody);
 });
 
-export default app
+export default app;
