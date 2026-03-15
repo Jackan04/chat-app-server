@@ -8,7 +8,7 @@ export async function register(req, res, next) {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
-      next({
+      return next({
         status: 400,
         message: "Validation failed",
         errors: validationErrors.array(),
@@ -37,7 +37,7 @@ export async function login(req, res, next) {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
-      next({
+      return next({
         status: 400,
         message: "Validation failed",
         errors: validationErrors.array(),
@@ -53,17 +53,17 @@ export async function login(req, res, next) {
     });
 
     if (!user) {
-      res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      res.status(401).json({ message: "Invalid credentials" });
+      return next({ status: 401, message: "Invalid credentials" });
     }
 
     const token = signToken(user.id);
-    res.status(201).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
     return next(error);
   }
