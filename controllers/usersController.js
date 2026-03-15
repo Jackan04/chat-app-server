@@ -1,19 +1,34 @@
 import { prisma } from "../lib/prisma.js";
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (req, res, next) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        bio: true,
+        online: true,
+      },
+    });
     res.json(users);
   } catch (error) {
     next(error);
   }
 };
 
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
         id: Number(req.params.id),
+      },
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        bio: true,
+        online: true,
       },
     });
 
@@ -23,27 +38,49 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
-  const { displayName, bio, online } = req.body;
+export const updateUser = async (req, res, next) => {
+  try {
+    const { displayName, bio, online } = req.body;
 
-  const user = await prisma.user.update({
-    where: { id: Number(req.params.id) },
-    data: {
-      displayName: displayName,
-      bio: bio,
-      online: online,
-    },
-  });
+    const user = await prisma.user.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        displayName: displayName,
+        bio: bio,
+        online: online,
+      },
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        bio: true,
+        online: true,
+      },
+    });
 
-  res.json(user);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const deleteUser = async (req, res) => {
-  const user = await prisma.user.delete({
-    where: {
-      id: Number(req.params.id),
-    },
-  });
+export const deleteUser = async (req, res, next) => {
+  try {
+    const user = await prisma.user.delete({
+      where: {
+        id: Number(req.params.id),
+      },
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        bio: true,
+        online: true,
+      },
+    });
 
-  res.json(user);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 };
