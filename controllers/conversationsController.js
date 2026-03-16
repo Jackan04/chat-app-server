@@ -30,6 +30,28 @@ export async function createConversation(req, res, next) {
   try {
     const { user1Id, user2Id } = req.body;
 
+    const existingConversation = await prisma.conversation.findFirst({
+      where: {
+        AND: [
+          { participants: { some: { id: user1Id } } },
+          { participants: { some: { id: user2Id } } },
+        ],
+      },
+      include: {
+        participants: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+          },
+        },
+      },
+    });
+
+    if (existingConversation) {
+      return res.status(200).json(existingConversation);
+    }
+
     const conversation = await prisma.conversation.create({
       data: {
         participants: {
