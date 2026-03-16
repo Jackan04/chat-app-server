@@ -10,7 +10,18 @@ const userSelect = {
 
 export async function getUsers(req, res, next) {
   try {
-    const users = await prisma.user.findMany({ select: userSelect });
+    const { username } = req.query;
+    const users = await prisma.user.findMany({
+      where: username
+        ? {
+            username: {
+              contains: username,
+              mode: "insensitive",
+            },
+          }
+        : {},
+      select: userSelect,
+    });
     return res.json(users);
   } catch (error) {
     return next(error);
