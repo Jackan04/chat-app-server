@@ -36,29 +36,6 @@ export async function getUserById(req, res, next) {
   }
 }
 
-export async function getUserByUsername(req, res, next) {
-  const { username } = req.query;
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        username: {
-          contains: username,
-          mode: "insensitive",
-        },
-      },
-      select: userSelect,
-    });
-
-    if (!user) {
-      return next({ status: 404, message: "User not found" });
-    }
-
-    return res.json(user);
-  } catch (error) {
-    return next(error);
-  }
-}
-
 export async function updateUser(req, res, next) {
   const userId = Number(req.params.id);
 
