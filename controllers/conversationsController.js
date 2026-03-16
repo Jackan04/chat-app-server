@@ -1,5 +1,12 @@
 import { prisma } from "../lib/prisma.js";
 
+const participantSelect = {
+  id: true,
+  username: true,
+  displayName: true,
+  online: true,
+};
+
 export async function getConversations(req, res, next) {
   try {
     const conversations = await prisma.conversation.findMany({
@@ -10,11 +17,7 @@ export async function getConversations(req, res, next) {
       },
       include: {
         participants: {
-          select: {
-            id: true,
-            username: true,
-            displayName: true,
-          },
+          select: participantSelect,
         },
         messages: true,
       },
@@ -39,11 +42,7 @@ export async function createConversation(req, res, next) {
       },
       include: {
         participants: {
-          select: {
-            id: true,
-            username: true,
-            displayName: true,
-          },
+          select: participantSelect,
         },
       },
     });
@@ -60,11 +59,7 @@ export async function createConversation(req, res, next) {
       },
       include: {
         participants: {
-          select: {
-            id: true,
-            username: true,
-            displayName: true,
-          },
+          select: participantSelect,
         },
       },
     });
@@ -86,11 +81,7 @@ export async function getConversationById(req, res, next) {
       },
       include: {
         participants: {
-          select: {
-            id: true,
-            username: true,
-            displayName: true,
-          },
+          select: participantSelect,
         },
         messages: true,
       },
