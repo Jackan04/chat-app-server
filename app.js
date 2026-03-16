@@ -20,13 +20,8 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   const responseBody = {
     message: err.message || "There was an error",
+    validationErrors: err.validationErrors || [],
   };
-
-  const validationErrors = err.validationErrors || [];
-
-  if (validationErrors.length > 0) {
-    responseBody.validationErrors = validationErrors;
-  }
 
   res.status(err.status || 500).json(responseBody);
 });

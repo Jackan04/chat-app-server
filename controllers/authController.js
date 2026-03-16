@@ -11,7 +11,7 @@ export async function register(req, res, next) {
       return next({
         status: 400,
         message: "Validation failed",
-        errors: validationErrors.array(),
+        validationErrors: validationErrors.array(),
       });
     }
 
@@ -40,7 +40,7 @@ export async function login(req, res, next) {
       return next({
         status: 400,
         message: "Validation failed",
-        errors: validationErrors.array(),
+        validationErrors: validationErrors.array(),
       });
     }
 
