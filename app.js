@@ -22,8 +22,10 @@ app.use((err, req, res, next) => {
     message: err.message || "There was an error",
   };
 
-  if (err.validationErrors.length > 0) {
-    responseBody.validationErrors = err.validationErrors;
+  const validationErrors = err.validationErrors || [];
+
+  if (validationErrors.length > 0) {
+    responseBody.validationErrors = validationErrors;
   }
 
   res.status(err.status || 500).json(responseBody);
