@@ -97,7 +97,7 @@ export async function sendMessage(req, res, next) {
       },
     });
 
-    return res.status(201).json({ message });
+    return res.status(201).json(message);
   } catch (error) {
     return next(error);
   }
