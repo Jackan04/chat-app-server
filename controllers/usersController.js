@@ -47,28 +47,6 @@ export async function getUserById(req, res, next) {
   }
 }
 
-export async function toggleUserStatus(req, res, next) {
-  const userId = Number(req.params.id);
-
-  if (req.user.id !== userId) {
-    return next({ status: 403, message: "Forbidden" });
-  }
-
-  try {
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        online: !req.user.online,
-      },
-      select: userSelect,
-    });
-
-    return res.json(user.online);
-  } catch (error) {
-    return next(error);
-  }
-}
-
 export async function updateUser(req, res, next) {
   const userId = Number(req.params.id);
 
