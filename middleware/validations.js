@@ -16,7 +16,7 @@ const registerValidations = [
 
       if (existingUser) throw new Error("Username is already taken");
     }),
-
+  body("displayName").trim().notEmpty().withMessage("Display Name is required"),
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters"),
