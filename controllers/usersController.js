@@ -63,7 +63,7 @@ export async function toggleUserStatus(req, res, next) {
       select: userSelect,
     });
 
-    return res.json(user);
+    return res.json(user.online);
   } catch (error) {
     return next(error);
   }
