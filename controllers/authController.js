@@ -15,12 +15,13 @@ export async function register(req, res, next) {
       });
     }
 
-    const { username, password } = req.body;
+    const { username, displayName, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
         username: username,
+        displayName: displayName,
         password: passwordHash,
       },
     });
