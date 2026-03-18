@@ -16,7 +16,7 @@ const registerValidations = [
 
       if (existingUser) throw new Error("Username is already taken");
     }),
-  body("displayName").trim().notEmpty().withMessage("Display Name is required"),
+  body("displayName").trim().notEmpty().withMessage("Display name is required"),
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters"),
@@ -34,4 +34,17 @@ const loginValidations = [
   body("password").trim().notEmpty().withMessage("Password is required"),
 ];
 
-export { registerValidations, loginValidations };
+const updateValidations = [
+  body("displayName")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("Display name cannot be empty"),
+  body("bio").optional().isString().withMessage("Bio must be a string"),
+  body("online")
+    .optional()
+    .isBoolean()
+    .withMessage("Online must be true or false"),
+];
+
+export { registerValidations, loginValidations, updateValidations };

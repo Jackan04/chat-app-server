@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+import { validationResult } from "express-validator";
 
 const userSelect = {
   id: true,
@@ -52,6 +53,16 @@ export async function updateUser(req, res, next) {
 
   if (req.user.id !== userId) {
     return next({ status: 403, message: "Forbidden" });
+  }
+
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    return next({
+      status: 400,
+      message: "Validation failed",
+      validationErrors: validationErrors.array(),
+    });
   }
 
   try {

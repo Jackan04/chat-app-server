@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { updateValidations } from "../middleware/validations.js";
 import {
   getUsers,
   getUserById,
@@ -10,7 +11,7 @@ const usersRouter = Router();
 
 usersRouter.get("/", getUsers);
 usersRouter.get("/:id", getUserById);
-usersRouter.patch("/:id", updateUser);
+usersRouter.patch("/:id", updateValidations, updateUser);
 usersRouter.delete("/:id", deleteUser);
 
 export default usersRouter;
