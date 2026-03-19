@@ -15,7 +15,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test": "NODE_ENV=test node --experimental-vm-modules node_modules/.bin/jest",
     "start": "node --watch server.js",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:generate": "npx prisma generate",
