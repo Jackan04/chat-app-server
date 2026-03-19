@@ -40,11 +40,6 @@ const updateValidations = [
     .trim()
     .notEmpty()
     .withMessage("Display name cannot be empty"),
-  body("bio").optional().isString().withMessage("Bio must be a string"),
-  body("online")
-    .optional()
-    .isBoolean()
-    .withMessage("Online must be true or false"),
 ];
 
 export { registerValidations, loginValidations, updateValidations };
