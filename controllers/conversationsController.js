@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+import { validationResult } from "express-validator";
 
 const participantSelect = {
   id: true,
@@ -99,6 +100,16 @@ export async function getConversationById(req, res, next) {
 
 export async function sendMessage(req, res, next) {
   try {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return next({
+        status: 400,
+        message: "Validation failed",
+        validationErrors: validationErrors.array(),
+      });
+    }
+    
     const { content } = req.body;
     const conversationId = Number(req.params.id);
 
